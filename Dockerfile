@@ -1,39 +1,15 @@
-FROM python:3.11
+# Используем официальный образ Playwright с Python
+FROM mcr.microsoft.com/playwright/python:latest
 
+# Рабочая директория
 WORKDIR /app
+
+# Копируем весь код проекта
 COPY . .
 
-# Только реальные зависимости Playwright для Debian Trixie
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    libnss3 \
-    libatk-bridge2.0-0 \
-    libx11-xcb1 \
-    libxcb-shm0 \
-    libxcb1 \
-    libxcomposite1 \
-    libxdamage1 \
-    libxrandr2 \
-    libgbm1 \
-    libasound2 \
-    libpangocairo-1.0-0 \
-    libpango-1.0-0 \
-    libcairo2 \
-    libatk1.0-0 \
-    libgtk-3-0 \
-    libgdk-pixbuf-xlib-2.0-0 \
-    libxrender1 \
-    libfontconfig1 \
-    libfreetype6 \
-    libdbus-1-3 \
-    curl \
-    wget \
-    gnupg \
-    ca-certificates \
-    && rm -rf /var/lib/apt/lists/*
-
+# Обновляем pip и ставим зависимости Python
 RUN pip install --upgrade pip
 RUN pip install -r requirements.txt
 
-RUN playwright install
-
+# CMD запускает ваш скрипт автопостинга
 CMD ["python", "main.py"]
