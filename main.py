@@ -1,6 +1,8 @@
 from playwright.sync_api import sync_playwright
 import time
-import openai
+from openai import OpenAI
+
+client = OpenAI()
 import os
 import schedule
 import random
@@ -64,13 +66,15 @@ def generate_reply_ai(user_text):
     Продолжи диалог.
     """
 
-    response = openai.ChatCompletion.create(
-        model="gpt-4o-mini",
-        messages=[{"role": "user", "content": prompt}],
-        max_tokens=100
-    )
+response = client.chat.completions.create(
+    model="gpt-4o-mini",
+    messages=[
+        {"role": "user", "content": prompt}
+    ],
+    max_tokens=100
+)
 
-    return response.choices[0].message.content.strip()
+return response.choices[0].message.content
 
 
 # =========================
