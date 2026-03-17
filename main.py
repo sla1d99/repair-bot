@@ -5,6 +5,8 @@ import schedule
 import random
 from openai import OpenAI
 
+os.system("playwright install")
+
 client = OpenAI()
 
 EMAIL = "rrruuupppp"
