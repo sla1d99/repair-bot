@@ -1,7 +1,7 @@
-# Базовый образ с полной поддержкой зависимостей GUI
+# Используем официальный образ Python 3.11
 FROM python:3.11
 
-# Установка зависимостей для Playwright / Chromium
+# Устанавливаем зависимости для Playwright / Chromium
 RUN apt-get update && apt-get install -y --no-install-recommends \
     libnss3 \
     libatk-bridge2.0-0 \
@@ -18,7 +18,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libcairo2 \
     libatk1.0-0 \
     libgtk-3-0 \
-    libgdk-pixbuf2.0-0 \
+    libgdk-pixbuf-xlib-2.0-0 \
     libxrender1 \
     libfontconfig1 \
     libfreetype6 \
@@ -29,16 +29,18 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     ca-certificates \
     && rm -rf /var/lib/apt/lists/*
 
-# Установка рабочей директории
+# Рабочая директория приложения
 WORKDIR /app
+
+# Копируем весь код проекта внутрь контейнера
 COPY . .
 
-# Обновляем pip и ставим зависимости Python
+# Обновляем pip и устанавливаем зависимости Python
 RUN pip install --upgrade pip
 RUN pip install -r requirements.txt
 
-# Установка браузеров для Playwright
+# Устанавливаем браузеры для Playwright
 RUN playwright install
 
-# Команда запуска вашего скрипта
+# Команда запуска автопостинга
 CMD ["python", "main.py"]
