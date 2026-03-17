@@ -1,7 +1,9 @@
-# Используем официальный образ Python 3.11
 FROM python:3.11
 
-# Устанавливаем зависимости для Playwright / Chromium
+WORKDIR /app
+COPY . .
+
+# Установка всех зависимостей для Playwright / Chromium
 RUN apt-get update && apt-get install -y --no-install-recommends \
     libnss3 \
     libatk-bridge2.0-0 \
@@ -23,24 +25,37 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libfontconfig1 \
     libfreetype6 \
     libdbus-1-3 \
+    libvulkan1 \
+    libgtk-4-1 \
+    libflite1 \
+    libflite-usenglish-1.0 \
+    libopus0 \
+    libgstreamer-1.0-0 \
+    libgstreamer-plugins-base1.0-0 \
+    libgstvideo-1.0-0 \
+    libgstapp-1.0-0 \
+    libgstpbutils-1.0-0 \
+    libgsttag-1.0-0 \
+    libgstcodecparsers-1.0-0 \
+    libgstallocators-1.0-0 \
+    libgstfft-1.0-0 \
+    libgraphene-1.0-0 \
+    libenchant-2-2 \
+    libsecret-1-0 \
+    libhyphen0 \
+    libwoff2dec1 \
+    libx264-163 \
     curl \
     wget \
     gnupg \
     ca-certificates \
     && rm -rf /var/lib/apt/lists/*
 
-# Рабочая директория приложения
-WORKDIR /app
-
-# Копируем весь код проекта внутрь контейнера
-COPY . .
-
-# Обновляем pip и устанавливаем зависимости Python
+# Python зависимости
 RUN pip install --upgrade pip
 RUN pip install -r requirements.txt
 
-# Устанавливаем браузеры для Playwright
+# Установка браузеров Playwright
 RUN playwright install
 
-# Команда запуска автопостинга
 CMD ["python", "main.py"]
