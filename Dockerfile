@@ -1,5 +1,5 @@
-# Используем официальный образ Playwright с Python
-FROM mcr.microsoft.com/playwright/python:latest
+# Используем официальную версию Playwright Python, совпадающую с Playwright 1.58.0
+FROM mcr.microsoft.com/playwright/python:v1.58.0-jammy
 
 # Рабочая директория
 WORKDIR /app
@@ -11,5 +11,8 @@ COPY . .
 RUN pip install --upgrade pip
 RUN pip install -r requirements.txt
 
-# CMD запускает ваш скрипт автопостинга
+# Установка браузеров Playwright (Chromium, Firefox, WebKit)
+RUN playwright install
+
+# Команда запуска вашего автопостинга
 CMD ["python", "main.py"]
