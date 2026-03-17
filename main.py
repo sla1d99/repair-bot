@@ -173,6 +173,8 @@ schedule.every(10).minutes.do(check_messages_and_reply)
 
 print("🤖 Бот запущен...")
 
+run()
+
 while True:
     schedule.run_pending()
     time.sleep(60)
